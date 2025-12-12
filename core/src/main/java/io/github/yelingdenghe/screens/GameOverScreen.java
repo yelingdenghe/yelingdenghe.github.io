@@ -8,13 +8,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.yelingdenghe.FlappyGame;
-import io.github.yelingdenghe.GameScreen;
-import io.github.yelingdenghe.MainMenuScreen;
 import io.github.yelingdenghe.WorldConfig;
 
 /**
  * @author 夜凌
- * @Description: TODO
+ * @Description: 结算界面
  * @ClassName GameOverScreen
  * @Date 2025/12/10 18:19
  * @Version 1.0
@@ -52,11 +50,11 @@ public class GameOverScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Game Over", 180, 500);
-        game.font.draw(game.batch, "Score: " + score, 190, 450);
-        game.font.draw(game.batch, "High: " + game.getHighScore(), 190, 420);
-        game.font.draw(game.batch, "Tap to Retry", 180, 360);
-        game.font.draw(game.batch, "Press M for Menu", 160, 330);
+        game.font.draw(game.batch, "游戏结束", 180, 500);
+        game.font.draw(game.batch, "分数: " + score, 190, 450);
+        game.font.draw(game.batch, "最高分: " + game.getHighScore(), 190, 420);
+        game.font.draw(game.batch, "点击重试", 180, 360);
+        game.font.draw(game.batch, "按 M 键进入菜单", 160, 330);
         game.batch.end();
 
         if (Gdx.input.justTouched()) {

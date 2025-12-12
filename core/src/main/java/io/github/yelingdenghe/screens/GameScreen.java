@@ -1,4 +1,4 @@
-package io.github.yelingdenghe;
+package io.github.yelingdenghe.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,15 +12,16 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import io.github.yelingdenghe.FlappyGame;
+import io.github.yelingdenghe.WorldConfig;
 import io.github.yelingdenghe.entities.Bird;
 import io.github.yelingdenghe.entities.PipePair;
-import io.github.yelingdenghe.screens.GameOverScreen;
 
 import java.util.Iterator;
 
 /**
  * @author 夜凌
- * @Description: TODO
+ * @Description: 游戏主逻辑
  * @ClassName GameScreen
  * @Date 2025/12/10 18:15
  * @Version 1.0
@@ -90,7 +91,7 @@ public class GameScreen implements Screen {
 
     private void resetGame() {
         bird = new Bird(100, 400);
-        pipes = new Array<Pipe>();
+        pipes = new Array<PipePair>();
         pipeTimer = 0f;
         score = 0;
         state = State.READY;
@@ -228,7 +229,7 @@ public class GameScreen implements Screen {
         // 分数
         game.font.draw(
             game.batch,
-            "Score: " + score,
+            "分数: " + score,
             10,
             WorldConfig.WORLD_HEIGHT - 20
         );
@@ -236,14 +237,14 @@ public class GameScreen implements Screen {
         if (state == State.READY) {
             game.font.draw(
                 game.batch,
-                "Tap to Start",
+                "点击开始",
                 160,
                 450
             );
         } else if (state == State.PAUSED) {
             game.font.draw(
                 game.batch,
-                "Paused",
+                "已暂停",
                 200,
                 450
             );

@@ -1,4 +1,4 @@
-package io.github.yelingdenghe;
+package io.github.yelingdenghe.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import io.github.yelingdenghe.FlappyGame;
+import io.github.yelingdenghe.WorldConfig;
 
 /**
  * @author 夜凌
@@ -48,19 +50,19 @@ public class MainMenuScreen implements Screen {
         game.batch.begin();
         game.font.draw(
             game.batch,
-            "Flappy Bird",
+            "弹鸟",
             150,
             500
         );
         game.font.draw(
             game.batch,
-            "Tap / Press SPACE to Start",
+            "点击/按空格开始",
             100,
             400
         );
         game.font.draw(
             game.batch,
-            "High Score: " + game.getHighScore(),
+            "最高分: " + game.getHighScore(),
             130,
             350
         );

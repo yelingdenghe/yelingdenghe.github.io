@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import io.github.yelingdenghe.screens.MainMenuScreen;
 
 /**
  * @author 夜凌
@@ -40,6 +41,7 @@ public class FlappyGame extends Game {
         return prefs.getInteger("highscore", 0);
     }
 
+    // 更新最高分
     public void setHighScore(int score) {
         int old = getHighScore();
         if (score > old) {
