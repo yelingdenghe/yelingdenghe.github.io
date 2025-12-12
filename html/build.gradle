@@ -30,7 +30,7 @@ gwt {
     files(sourceSets.main.output.resourcesDir),
 
   )
-  modules = ["io.github.yelingdenghe.GdxDefinition"]
+  modules = ["io.github.ylingdenghe.GdxDefinition"]
 
   //// This affects where the final resulting build will be placed.
   war = file(outputPath)
@@ -47,7 +47,7 @@ gwt {
     startupUrl = "http://127.0.0.1:8080/index.html"
   }
   superDev {
-    modules = ["io.github.yelingdenghe.GdxDefinitionSuperdev"]
+    modules = ["io.github.ylingdenghe.GdxDefinitionSuperdev"]
   }
 }
 
