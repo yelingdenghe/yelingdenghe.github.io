@@ -2,6 +2,7 @@ package io.github.ylingdenghe.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import io.github.ylingdenghe.WorldConfig;
@@ -18,14 +19,14 @@ public class Bird {
     private static final float WIDTH = 34;
     private static final float HEIGHT = 24;
 
-    private Texture texture;
+    private final TextureRegion region;
 
     public Vector2 position = new Vector2();
     public Vector2 velocity = new Vector2();
     public Rectangle bounds = new Rectangle();
 
-    public Bird(Texture texture,float x, float y) {
-        this.texture = texture;
+    public Bird(TextureRegion region, float x, float y) {
+        this.region = region;
         position.set(x, y);
         bounds.setSize(WIDTH, HEIGHT);
     }
@@ -41,7 +42,7 @@ public class Bird {
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(texture, position.x, position.y, WIDTH, HEIGHT);
+        batch.draw(region, position.x, position.y, WIDTH, HEIGHT);
     }
 
 }

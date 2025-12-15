@@ -3,6 +3,8 @@ package io.github.ylingdenghe;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
 
 /**
@@ -16,18 +18,19 @@ public class Assets implements Disposable {
 
     private final AssetManager am = new AssetManager();
     private boolean queued = false;
+    private boolean finished = false;
 
-    /** 把需要的资源全部加入加载队列（只入队一次） */
+    // [Assets.java] 新增：缓存 region
+    public TextureRegion bg, ground, bird, pipeTop, pipeBottom;
+    public Sound sfxJump, sfxHit, sfxScore;
+
+    // [Assets.java] 修改：只加载 atlas + sound
     public void queueLoad() {
         if (queued) return;
         queued = true;
 
         // 图片
-        am.load("bg.png", Texture.class);
-        am.load("ground.png", Texture.class);
-        am.load("bird.png", Texture.class);
-        am.load("pipe_top.png", Texture.class);
-        am.load("pipe_bottom.png", Texture.class);
+        am.load("atlas/game.atlas", TextureAtlas.class);
 
         // 音效
         am.load("jump.wav", Sound.class);
@@ -52,6 +55,24 @@ public class Assets implements Disposable {
     public Sound sound(String path) {
         return am.get(path, Sound.class);
     }
+
+    // [Assets.java] 新增：加载完成后缓存 region（避免每帧 findRegion）
+    public void finishLoading() {
+        if (finished) return;
+        finished = true;
+
+        TextureAtlas atlas = am.get("atlas/game.atlas", TextureAtlas.class);
+        bg = atlas.findRegion("bg");
+        ground = atlas.findRegion("ground");
+        bird = atlas.findRegion("bird");
+        pipeTop = atlas.findRegion("pipe_top");
+        pipeBottom = atlas.findRegion("pipe_bottom");
+
+        sfxJump = am.get("jump.wav", Sound.class);
+        sfxHit  = am.get("hit.wav", Sound.class);
+        sfxScore= am.get("score.wav", Sound.class);
+    }
+
 
     @Override
     public void dispose() {

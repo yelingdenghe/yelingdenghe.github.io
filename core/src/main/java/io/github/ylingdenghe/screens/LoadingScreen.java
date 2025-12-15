@@ -45,6 +45,7 @@ public class LoadingScreen implements Screen {
 
         // 加载完成 -> 进主菜单
         if (game.assets.update()) {
+            game.assets.finishLoading();
             game.setScreen(new MainMenuScreen(game));
             return;
         }

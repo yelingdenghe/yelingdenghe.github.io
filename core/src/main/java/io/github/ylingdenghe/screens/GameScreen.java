@@ -6,7 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -56,6 +56,13 @@ public class GameScreen implements Screen {
     private Texture pipeTopTex;
     private Texture pipeBottomTex;
 
+    // [GameScreen.java] 修改：字段
+    private TextureRegion bgRegion;
+    private TextureRegion groundRegion;
+    private TextureRegion birdRegion;
+    private TextureRegion pipeTopRegion;
+    private TextureRegion pipeBottomRegion;
+
     // 用于碰撞检测的地面矩形
     private Rectangle groundBounds;
 
@@ -75,30 +82,27 @@ public class GameScreen implements Screen {
         );
         camera.update();
 
-        // 加载资源（后面可以重构到 Assets 管理类）
-        bgTexture = game.assets.tex("bg.png");
-        groundTexture = game.assets.tex("ground.png");
+        // [GameScreen.java] 修改：从 atlas 取 region（不再加载 png）
+        bgRegion = game.assets.bg;
+        groundRegion = game.assets.ground;
 
-        birdTex = game.assets.tex("bird.png");
-        pipeTopTex = game.assets.tex("pipe_top.png");
-        pipeBottomTex = game.assets.tex("pipe_bottom.png");
+        birdRegion = game.assets.bird;
+        pipeTopRegion = game.assets.pipeTop;
+        pipeBottomRegion = game.assets.pipeBottom;
 
-        sfxJump = game.assets.sound("jump.wav");
-        sfxHit = game.assets.sound("hit.wav");
-        sfxScore = game.assets.sound("score.wav");
+        // 音效用 assets 缓存
+        sfxJump = game.assets.sfxJump;
+        sfxHit  = game.assets.sfxHit;
+        sfxScore= game.assets.sfxScore;
 
-        groundBounds = new Rectangle(
-            0,
-            0,
-            WorldConfig.WORLD_WIDTH,
-            groundTexture.getHeight()
-        );
+        // groundBounds 高度从 region 取
+        groundBounds = new Rectangle(0, 0, WorldConfig.WORLD_WIDTH, groundRegion.getRegionHeight());
 
         resetGame();
     }
 
     private void resetGame() {
-        bird = new Bird(birdTex,100, 400);
+        bird = new Bird(birdRegion, 100, 400);
         pipes = new Array<PipePair>();
         pipeTimer = 0f;
         score = 0;
@@ -193,7 +197,7 @@ public class GameScreen implements Screen {
         float gapY = MathUtils.random(minY, maxY);
 
         float startX = WorldConfig.WORLD_WIDTH + 50f;
-        pipes.add(new PipePair(pipeTopTex, pipeBottomTex, startX, gapY));
+        pipes.add(new PipePair(pipeTopRegion, pipeBottomRegion, startX, gapY));
 
     }
 
@@ -217,21 +221,14 @@ public class GameScreen implements Screen {
 
         game.batch.begin();
         // 背景
-        game.batch.draw(bgTexture, 0, 0,
-            WorldConfig.WORLD_WIDTH,
-            WorldConfig.WORLD_HEIGHT);
-
+        game.batch.draw(bgRegion, 0, 0, WorldConfig.WORLD_WIDTH, WorldConfig.WORLD_HEIGHT);
         // 管道
         for (PipePair pipe : pipes) {
             pipe.draw(game.batch);
         }
 
         // 地面
-        game.batch.draw(groundTexture,
-            0,
-            0,
-            WorldConfig.WORLD_WIDTH,
-            groundTexture.getHeight());
+        game.batch.draw(groundRegion, 0, 0, WorldConfig.WORLD_WIDTH, groundRegion.getRegionHeight());
 
         // 小鸟
         bird.draw(game.batch);

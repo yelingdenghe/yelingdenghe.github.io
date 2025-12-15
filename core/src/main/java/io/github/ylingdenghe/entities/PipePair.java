@@ -2,6 +2,7 @@ package io.github.ylingdenghe.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import io.github.ylingdenghe.WorldConfig;
 
@@ -16,8 +17,8 @@ public class PipePair {
 
     private static final float WIDTH = 52;
 
-    private final Texture texTop;
-    private final Texture texBottom;
+    private final TextureRegion top;
+    private final TextureRegion bottom;
 
     public final Rectangle boundsTop = new Rectangle();
     public final Rectangle boundsBottom = new Rectangle();
@@ -26,9 +27,9 @@ public class PipePair {
     private final  float gapY;
     public boolean passed = false; // 是否已经计过分
 
-    public PipePair(Texture texTop, Texture texBottom, float startX, float gapY) {
-        this.texTop = texTop;
-        this.texBottom = texBottom;
+    public PipePair(TextureRegion top, TextureRegion bottom, float startX, float gapY) {
+        this.top = top;
+        this.bottom = bottom;
         this.x = startX;
         this.gapY = gapY;
 
@@ -43,14 +44,14 @@ public class PipePair {
             x,
             gapY + halfGap,
             WIDTH,
-            texTop.getHeight()
+            top.getRegionHeight()
         );
 
         boundsBottom.set(
             x,
-            gapY - halfGap - texBottom.getHeight(),
+            gapY - halfGap - bottom.getRegionHeight(),
             WIDTH,
-            texBottom.getHeight()
+            bottom.getRegionHeight()
         );
     }
 
@@ -60,8 +61,8 @@ public class PipePair {
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(texTop, boundsTop.x, boundsTop.y);
-        batch.draw(texBottom, boundsBottom.x, boundsBottom.y);
+        batch.draw(top, boundsTop.x, boundsTop.y);
+        batch.draw(bottom, boundsBottom.x, boundsBottom.y);
     }
 
     public boolean isOffScreen() {
