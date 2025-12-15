@@ -8,7 +8,20 @@ buildscript {
   }
   dependencies {
     classpath "com.android.tools.build:gradle:8.9.3"
+    classpath "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+  }
+}
 
+//导入纹理包
+import com.badlogic.gdx.tools.texturepacker.TexturePacker
+
+project.ext.texturePackerConfig  = ["$rootDir/assets-src/images", "$rootDir/assets/atlas", "game"]
+
+tasks.register('texturePacker') {
+  doLast {
+    def cfg = project.ext.texturePackerConfig
+    logger.lifecycle "Calling TexturePacker: $cfg"
+    TexturePacker.process(cfg[0] as String, cfg[1], cfg[2])   // ✅整数下标
   }
 }
 
