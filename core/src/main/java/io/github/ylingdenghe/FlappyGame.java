@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import io.github.ylingdenghe.screens.LoadingScreen;
 import io.github.ylingdenghe.screens.MainMenuScreen;
 
 /**
@@ -21,6 +22,7 @@ public class FlappyGame extends Game {
     public SpriteBatch batch;
     public BitmapFont font;
     public Preferences prefs;
+    public Assets assets;
 
     // 游戏中使用的所有中文字符
     private static final String CHINESE_CHARS = "弹鸟点击按空格开始最高分游戏结束数重试进入菜单已暂停/:M键 0123456789";
@@ -28,23 +30,18 @@ public class FlappyGame extends Game {
     @Override
     public void create() {
         batch = new SpriteBatch();
+        font = new BitmapFont();
 
-        // 使用 FreeType 生成支持中文的字体
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("simhei.ttf"));
-        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = 32;
-        parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + CHINESE_CHARS;
-        font = generator.generateFont(parameter);
-        generator.dispose();
-
-        // 初始化 Preferences
         prefs = Gdx.app.getPreferences("flappy_prefs");
         if (!prefs.contains("highscore")) {
             prefs.putInteger("highscore", 0);
             prefs.flush();
         }
 
-        setScreen(new MainMenuScreen(this));
+        assets = new Assets();
+
+        // 先去 LoadingScreen
+        setScreen(new LoadingScreen(this));
     }
 
     public int getHighScore() {
@@ -63,7 +60,10 @@ public class FlappyGame extends Game {
     @Override
     public void dispose() {
         super.dispose();
-        batch.dispose();
-        font.dispose();
+
+        // 注意：Assets 统一在这里释放（Screen/Entity 不要 dispose 这些共享资源）
+        if (assets != null) assets.dispose();
+        if (batch != null) batch.dispose();
+        if (font != null) font.dispose();
     }
 }

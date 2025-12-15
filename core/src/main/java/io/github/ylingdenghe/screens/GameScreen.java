@@ -72,12 +72,16 @@ public class GameScreen implements Screen {
         camera.update();
 
         // 加载资源（后面可以重构到 Assets 管理类）
-        bgTexture = new Texture("bg.png");
-        groundTexture = new Texture("ground.png");
+        bgTexture = game.assets.tex("bg.png");
+        groundTexture = game.assets.tex("ground.png");
 
-        sfxJump = Gdx.audio.newSound(Gdx.files.internal("jump.wav"));
-        sfxHit = Gdx.audio.newSound(Gdx.files.internal("hit.wav"));
-        sfxScore = Gdx.audio.newSound(Gdx.files.internal("score.wav"));
+        Texture birdTex = game.assets.tex("bird.png");
+        Texture pipeTopTex = game.assets.tex("pipe_top.png");
+        Texture pipeBottomTex = game.assets.tex("pipe_bottom.png");
+
+        sfxJump = game.assets.sound("jump.wav");
+        sfxHit = game.assets.sound("hit.wav");
+        sfxScore = game.assets.sound("score.wav");
 
         groundBounds = new Rectangle(
             0,
