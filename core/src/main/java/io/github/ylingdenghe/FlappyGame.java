@@ -30,7 +30,13 @@ public class FlappyGame extends Game {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        font = new BitmapFont();
+        // Use TTF with explicit Chinese glyphs to avoid garbled text on desktop/Android.
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("simhei.ttf"));
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + CHINESE_CHARS;
+        parameter.size = 32;
+        font = generator.generateFont(parameter);
+        generator.dispose();
 
         prefs = Gdx.app.getPreferences("flappy_prefs");
         if (!prefs.contains("highscore")) {
