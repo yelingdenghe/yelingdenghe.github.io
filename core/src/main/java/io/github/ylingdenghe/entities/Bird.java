@@ -18,17 +18,16 @@ public class Bird {
     private static final float WIDTH = 34;
     private static final float HEIGHT = 24;
 
-    public Vector2 position;
-    public Vector2 velocity;
-
     private Texture texture;
-    public Rectangle bounds;
 
-    public Bird(float x, float y) {
-        texture = new Texture("bird.png");
-        position = new Vector2(x, y);
-        velocity = new Vector2(0, 0);
-        bounds = new Rectangle(x, y, WIDTH, HEIGHT);
+    public Vector2 position = new Vector2();
+    public Vector2 velocity = new Vector2();
+    public Rectangle bounds = new Rectangle();
+
+    public Bird(Texture texture,float x, float y) {
+        this.texture = texture;
+        position.set(x, y);
+        bounds.setSize(WIDTH, HEIGHT);
     }
 
     public void update(float delta) {
@@ -45,7 +44,4 @@ public class Bird {
         batch.draw(texture, position.x, position.y, WIDTH, HEIGHT);
     }
 
-    public void dispose() {
-        texture.dispose();
-    }
 }

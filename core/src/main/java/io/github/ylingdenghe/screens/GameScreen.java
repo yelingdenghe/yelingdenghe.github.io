@@ -52,6 +52,10 @@ public class GameScreen implements Screen {
     private Sound sfxHit;
     private Sound sfxScore;
 
+    private Texture birdTex;
+    private Texture pipeTopTex;
+    private Texture pipeBottomTex;
+
     // 用于碰撞检测的地面矩形
     private Rectangle groundBounds;
 
@@ -75,9 +79,9 @@ public class GameScreen implements Screen {
         bgTexture = game.assets.tex("bg.png");
         groundTexture = game.assets.tex("ground.png");
 
-        Texture birdTex = game.assets.tex("bird.png");
-        Texture pipeTopTex = game.assets.tex("pipe_top.png");
-        Texture pipeBottomTex = game.assets.tex("pipe_bottom.png");
+        birdTex = game.assets.tex("bird.png");
+        pipeTopTex = game.assets.tex("pipe_top.png");
+        pipeBottomTex = game.assets.tex("pipe_bottom.png");
 
         sfxJump = game.assets.sound("jump.wav");
         sfxHit = game.assets.sound("hit.wav");
@@ -94,7 +98,7 @@ public class GameScreen implements Screen {
     }
 
     private void resetGame() {
-        bird = new Bird(100, 400);
+        bird = new Bird(birdTex,100, 400);
         pipes = new Array<PipePair>();
         pipeTimer = 0f;
         score = 0;
@@ -165,7 +169,6 @@ public class GameScreen implements Screen {
             }
 
             if (pipe.isOffScreen()) {
-                pipe.dispose();
                 it.remove();
             }
 
@@ -173,6 +176,7 @@ public class GameScreen implements Screen {
             if (pipe.boundsTop.overlaps(bird.bounds)
                 || pipe.boundsBottom.overlaps(bird.bounds)) {
                 onGameOver();
+                return;
             }
         }
 
@@ -189,7 +193,8 @@ public class GameScreen implements Screen {
         float gapY = MathUtils.random(minY, maxY);
 
         float startX = WorldConfig.WORLD_WIDTH + 50f;
-        pipes.add(new PipePair(startX, gapY));
+        pipes.add(new PipePair(pipeTopTex, pipeBottomTex, startX, gapY));
+
     }
 
     private void onGameOver() {
@@ -202,6 +207,7 @@ public class GameScreen implements Screen {
 
         // 切到结算界面
         game.setScreen(new GameOverScreen(game, score));
+        dispose(); // ✅ 释放当前 GameScreen 自己的资源（注意别释放 AssetManager 的共享资源）
     }
 
     private void draw() {
@@ -259,7 +265,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+        viewport.update(width, height,true);
     }
 
     @Override public void show() {}
@@ -269,14 +275,5 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        bgTexture.dispose();
-        groundTexture.dispose();
-        bird.dispose();
-        for (PipePair p : pipes) {
-            p.dispose();
-        }
-        sfxJump.dispose();
-        sfxHit.dispose();
-        sfxScore.dispose();
     }
 }

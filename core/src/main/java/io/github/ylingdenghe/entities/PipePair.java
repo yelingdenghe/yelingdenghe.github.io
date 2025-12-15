@@ -16,25 +16,21 @@ public class PipePair {
 
     private static final float WIDTH = 52;
 
-    private Texture texTop;
-    private Texture texBottom;
+    private final Texture texTop;
+    private final Texture texBottom;
 
-    public Rectangle boundsTop;
-    public Rectangle boundsBottom;
+    public final Rectangle boundsTop = new Rectangle();
+    public final Rectangle boundsBottom = new Rectangle();
 
     public float x;
-    private float gapY;
+    private final  float gapY;
     public boolean passed = false; // 是否已经计过分
 
-    public PipePair(float startX, float gapY) {
+    public PipePair(Texture texTop, Texture texBottom, float startX, float gapY) {
+        this.texTop = texTop;
+        this.texBottom = texBottom;
         this.x = startX;
         this.gapY = gapY;
-
-        texTop = new Texture("pipe_top.png");
-        texBottom = new Texture("pipe_bottom.png");
-
-        boundsTop = new Rectangle();
-        boundsBottom = new Rectangle();
 
         updateBounds();
     }
@@ -70,10 +66,5 @@ public class PipePair {
 
     public boolean isOffScreen() {
         return x + WIDTH < 0;
-    }
-
-    public void dispose() {
-        texTop.dispose();
-        texBottom.dispose();
     }
 }
